@@ -1,0 +1,143 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UpdateProductInput = 
+ record {
+   category: Category;
+   description: text;
+   id: ProductId;
+   imageUrl: text;
+   isActive: bool;
+   name: text;
+   price: nat;
+   stock: nat;
+ };
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type Timestamp = int;
+type StripeSessionStatus = 
+ variant {
+   completed: record {
+                response: text;
+                userPrincipal: opt text;
+              };
+   failed: record {error: text;};
+ };
+type StripeConfiguration = 
+ record {
+   allowedCountries: vec text;
+   secretKey: text;
+ };
+type ShoppingItem = 
+ record {
+   currency: text;
+   priceInCents: nat;
+   productDescription: text;
+   productName: text;
+   quantity: nat;
+ };
+type ProductId = nat;
+type Product = 
+ record {
+   category: Category;
+   description: text;
+   id: ProductId;
+   imageUrl: text;
+   isActive: bool;
+   name: text;
+   price: nat;
+   stock: nat;
+ };
+type OrderStatus = 
+ variant {
+   Cancelled;
+   Delivered;
+   Pending;
+   Processing;
+   Shipped;
+ };
+type OrderItem = 
+ record {
+   priceAtPurchase: nat;
+   productId: ProductId;
+   quantity: nat;
+ };
+type OrderId = nat;
+type Order = 
+ record {
+   createdAt: Timestamp;
+   customerId: principal;
+   deliveryAddress: text;
+   id: OrderId;
+   items: vec OrderItem;
+   status: OrderStatus;
+   total: nat;
+ };
+type CreateProductInput = 
+ record {
+   category: Category;
+   description: text;
+   imageUrl: text;
+   name: text;
+   price: nat;
+   stock: nat;
+ };
+type CreateOrderInput = 
+ record {
+   deliveryAddress: text;
+   items: vec OrderItem;
+ };
+type Category = 
+ variant {
+   ColdDrink;
+   Juice;
+   MineralWater;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createCheckoutSession: (items: vec ShoppingItem, successUrl: text,
+   cancelUrl: text) -> (text);
+  createOrder: (input: CreateOrderInput) -> (OrderId);
+  createProduct: (input: CreateProductInput) -> (ProductId);
+  deleteProduct: (id: ProductId) -> ();
+  getAllOrders: () -> (vec Order) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getMyOrders: () -> (vec Order) query;
+  getOrderById: (id: OrderId) -> (opt Order) query;
+  getProductById: (id: ProductId) -> (opt Product) query;
+  getProducts: () -> (vec Product) query;
+  getProductsByCategory: (category: Category) -> (vec Product) query;
+  getStripeSessionStatus: (sessionId: text) -> (StripeSessionStatus);
+  isCallerAdmin: () -> (bool) query;
+  isStripeConfigured: () -> (bool) query;
+  searchProducts: (searchTerm: text) -> (vec Product) query;
+  setStripeConfiguration: (config: StripeConfiguration) -> ();
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateOrderStatus: (id: OrderId, status: OrderStatus) -> ();
+  updateProduct: (input: UpdateProductInput) -> ();
+  updateStock: (id: ProductId, newStock: nat) -> ();
+}

@@ -1,0 +1,22 @@
+{
+  "overview": "SuperSip is an e-commerce storefront for a beverage startup selling cold drinks, mineral water, and juices. Customers can browse products, add to cart, checkout with Stripe, and view their order history. Admins can manage products and orders.",
+  "features": [
+    "Product catalog with categories (cold drinks, mineral water, juice)",
+    "Shopping cart with add/remove/quantity controls",
+    "Stripe-powered checkout",
+    "Customer accounts with order history",
+    "Admin dashboard for product and order management",
+    "Image storage for product photos",
+    "Role-based access control"
+  ],
+  "category": "e-commerce",
+  "tags": [
+    "beverages",
+    "e-commerce",
+    "shopping",
+    "startup",
+    "stripe",
+    "accounts"
+  ],
+  "last_updated": "2026-04-17T12:53:24.950Z"
+}

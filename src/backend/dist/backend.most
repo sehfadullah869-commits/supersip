@@ -1,0 +1,64 @@
+// Version: 1.0.0
+type Category__8224233 = {#ColdDrink; #Juice; #MineralWater};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OrderId__197865225 = Nat;
+type OrderItem__241319351 =
+  {priceAtPurchase : Nat; productId : ProductId__160010635; quantity : Nat};
+type OrderStatus__272730104 =
+  {#Cancelled; #Delivered; #Pending; #Processing; #Shipped};
+type Order__141779993 =
+  {
+    createdAt : Timestamp__301639476;
+    customerId : Principal;
+    deliveryAddress : Text;
+    id : OrderId__197865225;
+    items : [OrderItem__241319351];
+    status : OrderStatus__272730104;
+    total : Nat
+  };
+type ProductId__160010635 = Nat;
+type Product__750902660 =
+  {
+    category : Category__8224233;
+    description : Text;
+    id : ProductId__160010635;
+    imageUrl : Text;
+    isActive : Bool;
+    name : Text;
+    price : Nat;
+    stock : Nat
+  };
+type StripeConfiguration__96897619 =
+  {allowedCountries : [Text]; secretKey : Text};
+type Timestamp__301639476 = Int;
+type UserRole__1054455867 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable orders :
+    {
+      var root : Node__46230540<OrderId__197865225, Order__141779993>;
+      var size : Nat__490723111
+    };
+  stable products :
+    {
+      var root : Node__46230540<ProductId__160010635, Product__750902660>;
+      var size : Nat__490723111
+    };
+  stable var stripeConfiguration : ?StripeConfiguration__96897619
+};
