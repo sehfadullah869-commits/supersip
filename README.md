@@ -1,2 +1,2 @@
 # supersip
-Exported from Caffeine project: SuperSip
+Exported from sehs project: SuperSip
